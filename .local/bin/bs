@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+open -a "Arc"
+open -g raycast://extensions/raycast/window-management/last-third
+open -a 'Alacritty'
+open -g raycast://extensions/raycast/window-management/first-two-thirds

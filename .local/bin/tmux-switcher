@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+CATPPUCCIN_LAVENDER="\033[38;5;147m"
+CATPPUCCIN_SAPPHIRE="\033[38;5;153m"
+CATPPUCCIN_PEACH="\033[38;5;214m"
+CATPPUCCIN_GRAY="\033[38;5;240m"
+RESET_COLOR="\033[0m"
+
+TMUX_SESSION_LIST=$(tmux list-sessions | awk '{print $1}' | sed 's|:||')
+
+COLORIZED_RESULT=$(echo "$TMUX_SESSION_LIST" | while read -r line; do
+        printf "${CATPPUCCIN_LAVENDER}%s${RESET_COLOR}\n" "$line"
+done)
+
+SELECTED_RESULT=$(echo -e "$COLORIZED_RESULT" | fzf --ansi)
+
+if [ -z "$SELECTED_RESULT" ]; then
+    exit 0
+fi
+
+tmux switch-client -t $SELECTED_RESULT
+
