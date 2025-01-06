@@ -1,0 +1,18 @@
+[includeIf "gitdir:~/Dev/"]
+path = ~/Dev/.gitconfig
+
+[includeIf "gitdir:~/Personal/"]
+path = ~/Personal/.gitconfig
+
+[includeIf "gitdir:~/dotfiles/"]
+path = ~/Personal/.gitconfig
+
+[core]
+	autocrlf = false
+	editor = nvim
+
+[push]
+	autoSetupRemote = true
+
+[pull]
+	rebase = true
