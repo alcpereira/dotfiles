@@ -23,6 +23,13 @@ bindings = [
   { key = "Left", mods = "Command", chars = "\u001bOH" },
   { key = "Right", mods = "Command", chars = "\u001bOF" },
   { key = "Back", mods = "Command", chars = "\u0015" },
+  { key = "L", mods = "Command", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
+    "display-popup",
+    "-E",
+    "-h 95%",
+    "-w 95%",
+    "lazygit",
+  ] } },
   { key = "G", mods = "Command", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
     "display-popup",
     "-E",
