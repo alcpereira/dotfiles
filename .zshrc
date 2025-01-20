@@ -10,6 +10,10 @@ export LANG="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 export PATH=$HOME/.local/bin:$PATH
 
+# Needs work.zsh
+autoload -U add-zsh-hook
+add-zsh-hook chpwd check_dev_path
+
 # Needs to be at the end
 eval "$(starship init zsh)"
 

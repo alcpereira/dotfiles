@@ -28,7 +28,12 @@ bindings = [
     "-E",
     "-h 95%",
     "-w 95%",
-    "lazygit",
+    "source ~/.config/zsh/work.zsh && lazygit",
+  ] } },
+  { key = "Y", mods = "Command", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
+    "display-popup",
+    "-E",
+    "source ~/.config/zsh/work.zsh && yacht",
   ] } },
   { key = "G", mods = "Command", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
     "display-popup",
