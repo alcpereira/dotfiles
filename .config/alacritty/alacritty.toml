@@ -40,10 +40,14 @@ bindings = [
     "-E",
     "tt",
   ] } },
-  { key = "G", mods = "Command|Shift", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
+  { key = "G", mods = "Command|Alt", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
     "display-popup",
     "-E",
     "tmux-switcher",
+  ] } },
+  { key = "G", mods = "Command|Shift", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
+    "switch-client",
+    "-l",
   ] } },
   { key = "W", mods = "Command", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
     "kill-window",
