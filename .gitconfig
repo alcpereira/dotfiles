@@ -21,11 +21,6 @@ path = ~/Personal/.gitconfig
 [init]
 	defaultBranch = main
 
-[fetch]
-	prune = true
-	pruneTags = true
-	all = true
-
 [rerere]
 	enabled = true
 
