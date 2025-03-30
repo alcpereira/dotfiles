@@ -33,7 +33,7 @@ bindings = [
   { key = "Y", mods = "Command", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
     "display-popup",
     "-E",
-    "source ~/.config/zsh/work.zsh && yacht",
+    "source ~/.config/zsh/work.zsh && node $HOME/Dev/yacht/dist/index.js",
   ] } },
   { key = "G", mods = "Command", command = { program = "/Users/pereiraa3/homebrew/bin/tmux", args = [
     "display-popup",
