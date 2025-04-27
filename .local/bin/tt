@@ -1,29 +1,37 @@
 #!/usr/bin/env bash
 
+ZOXIDE_RESULT=$(zoxide query -l | sed "s|$HOME|~|")
+FIND_RESULT=$(find ~/Personal ~/Work -maxdepth 1 -mindepth 1 -type d | sed "s|$HOME|~|")
+MANUAL_DIRS=(
+    "~/dotfiles"
+    "~/.config"
+)
+MANUAL_DIRS_STR=$(printf "%s\n" "${MANUAL_DIRS[@]}")
+COMBINED_DIRS=$(echo -e "$FIND_RESULT\n$MANUAL_DIRS_STR" | sort | uniq)
+
+COMBINED_RESULT=$(echo "$ZOXIDE_RESULT" | grep -Fx -f - <(echo "$COMBINED_DIRS"))
+COMBINED_RESULT+=$'\n'$(echo "$COMBINED_DIRS" | grep -Fvx -f <(echo "$ZOXIDE_RESULT"))
+
+# Color the results
 CATPPUCCIN_LAVENDER="\033[38;5;147m"
 CATPPUCCIN_SAPPHIRE="\033[38;5;153m"
 CATPPUCCIN_PEACH="\033[38;5;214m"
 CATPPUCCIN_GRAY="\033[38;5;240m"
 RESET_COLOR="\033[0m"
 
-ZOXIDE_RESULT=$(zoxide query -l)
-FIND_RESULT=$(find ~/.config ~/Personal ~/Work -maxdepth 1 -type d)
-
-COMBINED_RESULT=$(echo -e "$ZOXIDE_RESULT\n$FIND_RESULT" | awk '!seen[$0]++' | sed "s|$HOME|~|")
-
-
 COLORIZED_RESULT=$(echo "$COMBINED_RESULT" | while read -r line; do
     if [[ "$line" == *~/Personal* ]]; then
         printf "${CATPPUCCIN_LAVENDER}%s${RESET_COLOR}\n" "$line"
     elif [[ "$line" == *~/Work* ]]; then
         printf "${CATPPUCCIN_SAPPHIRE}%s${RESET_COLOR}\n" "$line"
-    elif [[ "$line" == *~/.config* ]]; then
+    elif [[ "$line" == "~/dotfiles" ]]; then
         printf "${CATPPUCCIN_PEACH}%s${RESET_COLOR}\n" "$line"
      else
         printf "${CATPPUCCIN_GRAY}%s${RESET_COLOR}\n" "$line"
     fi
 done)
 
+# Pass it to fzf
 SELECTED_RESULT=$(echo -e "$COLORIZED_RESULT" | fzf --ansi)
 
 if [ -z "$SELECTED_RESULT" ]; then
@@ -31,6 +39,7 @@ if [ -z "$SELECTED_RESULT" ]; then
 fi
 
 SELECTED_RESULT_CLEAN=$(echo "$SELECTED_RESULT" | sed "s|\x1B\[[0-9;]*m||g")
+zoxide add "${SELECTED_RESULT_CLEAN/\~/$HOME}"
 
 FOLDER=$(basename "$SELECTED_RESULT_CLEAN" | tr . _)
 
@@ -39,7 +48,7 @@ SESSION=$(tmux list-sessions | grep $FOLDER | awk '{print $1}')
 SELECTED_RESULT_CLEAN=$(echo "$SELECTED_RESULT_CLEAN" | sed "s|~|$HOME|")
 
 if [ -z "$SESSION" ]; then
-    tmux new-session -d -s $FOLDER -c "$SELECTED_RESULT_CLEAN/" -n nvim nvim
+    tmux new-session -d -s $FOLDER -c "$SELECTED_RESULT_CLEAN/" -n nvim 'nvim; exec $SHELL'
     tmux new-window -c "$SELECTED_RESULT_CLEAN" -d -n shell
     tmux switch-client -t $FOLDER
 else
