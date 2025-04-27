@@ -6,6 +6,8 @@ return {
       { "nvim-lua/plenary.nvim", branch = "master" },
     },
     build = "make tiktoken",
-    opts = {},
+    opts = {
+      model = "claude-3.7-sonnet"
+    },
   },
 }
