@@ -83,18 +83,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
     pcall(require("telescope").load_extension, "fzf")
     pcall(require("telescope").load_extension, "ui-select")
 
-    -- See `:help telescope.builtin`
-    local builtin = require("telescope.builtin")
-    local pickers = require("telescope.pickers")
-    local finders = require("telescope.finders")
-    local make_entry = require("telescope.make_entry")
-    local conf = require("telescope.config").values
-
     local live_multigrep = function(opts)
+      local pickers = require("telescope.pickers")
       opts = opts or {}
       opts.cwd = opts.cwd or vim.uv.cwd()
 
-      local finder = finders.new_async_job({
+      local finder = require("telescope.finders").new_async_job({
         command_generator = function(prompt)
           if not prompt or prompt == "" then
             return nil
@@ -129,19 +123,20 @@ return { -- Fuzzy Finder (files, lsp, etc)
             :totable()
         end,
         cwd = opts.cwd,
-        entry_maker = make_entry.gen_from_vimgrep(opts),
+        entry_maker = require("telescope.make_entry").gen_from_vimgrep(opts),
       })
       pickers
         .new(opts, {
           debounce = 100,
           prompt_title = "Live Grep",
           finder = finder,
-          previewer = conf.grep_previewer(opts),
+          previewer = require("telescope.config").values.grep_previewer(opts),
           sorter = require("telescope.sorters").empty(),
         })
         :find()
     end
 
+    local builtin = require("telescope.builtin")
     vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
     vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
     vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
