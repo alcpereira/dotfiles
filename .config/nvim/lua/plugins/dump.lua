@@ -220,18 +220,21 @@ return {
               table.insert(args, pieces[2])
             end
 
-            return vim.tbl_flatten({
-              args,
-              {
-                "--color=never",
-                "--no-heading",
-                "--with-filename",
-                "--line-number",
-                "--column",
-                "--smart-case",
-                "--hidden",
-              },
-            })
+            return vim
+              .iter({
+                args,
+                {
+                  "--color=never",
+                  "--no-heading",
+                  "--with-filename",
+                  "--line-number",
+                  "--column",
+                  "--smart-case",
+                  "--hidden",
+                },
+              })
+              :flatten()
+              :totable()
           end,
           cwd = opts.cwd,
           entry_maker = make_entry.gen_from_vimgrep(opts),
