@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Get the list of "packages" from package.json
+RESULT=$(jq -r '.scripts | keys[]'  package.json | fzf)
+
+if [ -z "$RESULT" ]; then
+    exit 0
+fi
+
+yarn $RESULT
