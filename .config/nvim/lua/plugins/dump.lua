@@ -398,43 +398,4 @@ return {
     },
     opts = {}, -- your configuration
   },
-  --	{
-  --		"nvim-neo-tree/neo-tree.nvim",
-  --		version = "*",
-  --		dependencies = {
-  --			"nvim-lua/plenary.nvim",
-  --			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-  --			"MunifTanjim/nui.nvim",
-  --		},
-  --		cmd = "Neotree",
-  --		keys = {
-  --			{ "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal", silent = true },
-  --		},
-  --		opts = {
-  --			filesystem = {
-  --				window = {
-  --					mappings = {
-  --						["\\"] = "close_window",
-  --					},
-  --				},
-  --			},
-  --		},
-  --	},
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-  {
-    "stevearc/oil.nvim",
-    ---@module 'oil'
-    ---@type oil.SetupOpts
-    opts = {},
-    config = function()
-      require("oil").setup({
-        columns = { "icon" },
-        view_options = { show_hidden = true },
-      })
-      vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-    end,
-    -- Optional dependencies
-    --		dependencies = { { "echasnovski/mini.icons", opts = {} } },
-    dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
-  },
 }
