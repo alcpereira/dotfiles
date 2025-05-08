@@ -30,6 +30,7 @@ return {
       javascriptreact = { "prettierd", "eslint_d" },
       javascript = { "prettierd", "eslint_d" },
       css = { "prettierd" },
+      json = { "fixjson" },
       html = { "prettierd" },
       -- yaml = { "yamlfmt", "prettierd", "prettier", stop_after_first = true },
       yaml = { "prettierd" },
