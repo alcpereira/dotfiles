@@ -23,6 +23,3 @@ path = ~/Personal/.gitconfig
 
 [rerere]
 	enabled = true
-
-[rebase]
-	updateRefs = true
