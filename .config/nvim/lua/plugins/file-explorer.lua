@@ -7,6 +7,9 @@ return {
     view_options = {
       show_hidden = true,
     },
+    keymaps = {
+      ["<Esc>"] = { "actions.close", mode = { "n" } },
+    },
   },
   keys = {
     { "-", "<CMD>Oil --float<CR>", desc = "Open parent directory" },
