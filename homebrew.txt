@@ -46,3 +46,15 @@ yamllint
 zoxide
 zsh-autosuggestions
 zsh-syntax-highlighting
+
+# Casks
+sst/tap/opencode
+tursodatabase/tap/turso
+bitwarden
+blackhole-2ch
+mongodb-compass
+postman
+rar
+reactotron
+vlc
+zulu@17
