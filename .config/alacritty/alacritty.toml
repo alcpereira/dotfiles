@@ -23,36 +23,36 @@ bindings = [
   { key = "Left", mods = "Command", chars = "\u001bOH" },
   { key = "Right", mods = "Command", chars = "\u001bOF" },
   { key = "Back", mods = "Command", chars = "\u0015" },
-  { key = "L", mods = "Command", command = { program = "/Users/alexandre.pereira/homebrew/bin/tmux", args = [
+  { key = "L", mods = "Command", command = { program = "/opt/homebrew/bin/tmux", args = [
     "display-popup",
     "-E",
     "-h 95%",
     "-w 95%",
     "source ~/.config/zsh/work.zsh && lazygit",
   ] } },
-  { key = "Y", mods = "Command", command = { program = "/Users/alexandre.pereira/homebrew/bin/tmux", args = [
+  { key = "Y", mods = "Command", command = { program = "/opt/homebrew/bin/tmux", args = [
     "display-popup",
     "-E",
     "source ~/.config/zsh/work.zsh && node $HOME/Work/yacht/dist/index.js",
   ] } },
-  { key = "G", mods = "Command", command = { program = "/Users/alexandre.pereira/homebrew/bin/tmux", args = [
+  { key = "G", mods = "Command", command = { program = "/opt/homebrew/bin/tmux", args = [
     "display-popup",
     "-E",
     "tt",
   ] } },
-  { key = "G", mods = "Command|Alt", command = { program = "/Users/alexandre.pereira/homebrew/bin/tmux", args = [
+  { key = "G", mods = "Command|Alt", command = { program = "/opt/homebrew/bin/tmux", args = [
     "display-popup",
     "-E",
     "tmux-switcher",
   ] } },
-  { key = "G", mods = "Command|Shift", command = { program = "/Users/alexandre.pereira/homebrew/bin/tmux", args = [
+  { key = "G", mods = "Command|Shift", command = { program = "/opt/homebrew/bin/tmux", args = [
     "switch-client",
     "-l",
   ] } },
-  { key = "W", mods = "Command", command = { program = "/Users/alexandre.pereira/homebrew/bin/tmux", args = [
+  { key = "W", mods = "Command", command = { program = "/opt/homebrew/bin/tmux", args = [
     "kill-window",
   ] } },
-  { key = "W", mods = "Command|Shift", command = { program = "/Users/alexandre.pereira/homebrew/bin/tmux", args = [
+  { key = "W", mods = "Command|Shift", command = { program = "/opt/homebrew/bin/tmux", args = [
     "kill-session",
   ] } },
 ]
