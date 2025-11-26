@@ -10,6 +10,7 @@ path = ~/Personal/.gitconfig
 [core]
 	autocrlf = false
 	editor = nvim
+	pager = delta
 
 [push]
 	autoSetupRemote = true
@@ -23,3 +24,12 @@ path = ~/Personal/.gitconfig
 
 [rerere]
 	enabled = true
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+
+[merge]
+	conflictStyle = zdiff3
