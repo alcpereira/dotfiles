@@ -221,6 +221,10 @@ return {
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
   {
+    "qvalentin/helm-ls.nvim",
+    ft = "helm",
+  },
+  {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     -- Optional dependency

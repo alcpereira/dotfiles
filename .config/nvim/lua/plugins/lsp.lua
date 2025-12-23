@@ -171,6 +171,17 @@ return {
       local servers = {
         ts_ls = {},
         eslint = {},
+        terraformls = {},
+        jdtls = {},
+        helm_ls = {
+          settings = {
+            ["helm-ls"] = {
+              yamlls = {
+                path = "yaml-language-server",
+              },
+            },
+          },
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
