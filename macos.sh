@@ -8,8 +8,8 @@ set -e
 echo "Configuring macOS settings..."
 echo ""
 
-# Close System Preferences to prevent overriding settings
-osascript -e 'tell application "System Preferences" to quit'
+# Close System Settings/Preferences to prevent overriding settings
+osascript -e 'tell application "System Settings" to quit' 2>/dev/null || osascript -e 'tell application "System Preferences" to quit' 2>/dev/null
 
 ###############################################################################
 # Dock                                                                        #
@@ -73,9 +73,6 @@ defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 # Show path bar
 defaults write com.apple.finder ShowPathbar -bool true
 
-# Show status bar
-defaults write com.apple.finder ShowStatusBar -bool true
-
 # Disable warning when changing file extension
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
@@ -116,7 +113,7 @@ echo "→ Restarting affected applications..."
 # Restart affected applications
 killall Dock
 killall Finder
-killall SystemUIServer
+killall SystemUIServer 2>/dev/null || true
 
 echo ""
 echo "✓ Done! Some changes may require a logout/restart to take effect."
