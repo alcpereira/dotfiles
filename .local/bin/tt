@@ -4,7 +4,7 @@ ZOXIDE_RESULT=$(zoxide query -l | sed "s|$HOME|~|")
 FIND_RESULT=$(find ~/Personal ~/Work -maxdepth 1 -mindepth 1 -type d | sed "s|$HOME|~|")
 MANUAL_DIRS=(
     "~/dotfiles"
-    "~/.config"
+    "~/Work"
 )
 MANUAL_DIRS_STR=$(printf "%s\n" "${MANUAL_DIRS[@]}")
 COMBINED_DIRS=$(echo -e "$FIND_RESULT\n$MANUAL_DIRS_STR" | sort | uniq)
