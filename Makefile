@@ -1,4 +1,4 @@
-.PHONY: install uninstall homebrew
+.PHONY: install uninstall homebrew macos
 
 install:
 	stow */
@@ -8,3 +8,6 @@ uninstall:
 
 homebrew:
 	brew install $(shell cat homebrew.txt)
+
+macos:
+	./macos.sh
