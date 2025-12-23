@@ -10,6 +10,9 @@ family = "MesloLGS Nerd Font Mono"
 [env]
 TERM = "xterm-256color"
 
+[selection]
+save_to_clipboard = true
+
 [window]
 startup_mode = "Maximized"
 decorations = "Buttonless"
