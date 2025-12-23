@@ -1,1 +1,2 @@
-.config/zsh/work.zsh
+# Personal/work-specific zsh configs
+**/work.zsh
