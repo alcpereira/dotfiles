@@ -3,7 +3,6 @@
 ZOXIDE_RESULT=$(zoxide query -l | sed "s|$HOME|~|")
 FIND_RESULT=$(find ~/Personal ~/Work -maxdepth 1 -mindepth 1 -type d | sed "s|$HOME|~|")
 MANUAL_DIRS=(
-    "~/dotfiles"
     "~/Work"
 )
 MANUAL_DIRS_STR=$(printf "%s\n" "${MANUAL_DIRS[@]}")
@@ -23,10 +22,8 @@ COLORIZED_RESULT=$(echo "$COMBINED_RESULT" | while read -r line; do
     if [[ "$line" == *~/Personal* ]]; then
         printf "${CATPPUCCIN_LAVENDER}%s${RESET_COLOR}\n" "$line"
     elif [[ "$line" == *~/Work* ]]; then
-        printf "${CATPPUCCIN_SAPPHIRE}%s${RESET_COLOR}\n" "$line"
-    elif [[ "$line" == "~/dotfiles" ]]; then
         printf "${CATPPUCCIN_PEACH}%s${RESET_COLOR}\n" "$line"
-     else
+    else
         printf "${CATPPUCCIN_GRAY}%s${RESET_COLOR}\n" "$line"
     fi
 done)
