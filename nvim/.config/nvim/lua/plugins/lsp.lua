@@ -173,6 +173,7 @@ return {
         eslint = {},
         terraformls = {},
         jdtls = {},
+        tailwindcss = {},
         helm_ls = {
           settings = {
             ["helm-ls"] = {
