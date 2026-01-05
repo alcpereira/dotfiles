@@ -43,11 +43,6 @@ bindings = [
     "-E",
     "tt",
   ] } },
-  { key = "G", mods = "Command|Alt", command = { program = "/opt/homebrew/bin/tmux", args = [
-    "display-popup",
-    "-E",
-    "tmux-switcher",
-  ] } },
   { key = "G", mods = "Command|Shift", command = { program = "/opt/homebrew/bin/tmux", args = [
     "switch-client",
     "-l",
