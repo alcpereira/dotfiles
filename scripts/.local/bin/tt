@@ -40,7 +40,7 @@ zoxide add "${SELECTED_RESULT_CLEAN/\~/$HOME}"
 
 FOLDER=$(basename "$SELECTED_RESULT_CLEAN" | tr . _)
 
-SESSION=$(tmux list-sessions | grep $FOLDER | awk '{print $1}')
+SESSION=$(tmux list-sessions -F "#{session_name}" | grep -x "$FOLDER")
 
 SELECTED_RESULT_CLEAN=$(echo "$SELECTED_RESULT_CLEAN" | sed "s|~|$HOME|")
 
