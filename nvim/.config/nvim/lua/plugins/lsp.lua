@@ -174,6 +174,15 @@ return {
         terraformls = {},
         jdtls = {},
         tailwindcss = {},
+        jsonls = {
+          filetypes = { "json", "jsonc" },
+          settings = {
+            json = {
+              schemas = require("schemastore").json.schemas(),
+              validate = { enable = true },
+            },
+          },
+        },
         helm_ls = {
           settings = {
             ["helm-ls"] = {
