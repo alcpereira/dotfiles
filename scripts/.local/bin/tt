@@ -1,55 +1,188 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-ZOXIDE_RESULT=$(zoxide query -l | sed "s|$HOME|~|")
-FIND_RESULT=$(find ~/Personal ~/Work -maxdepth 1 -mindepth 1 -type d | sed "s|$HOME|~|")
-MANUAL_DIRS=(
-    "~/Work"
+PROJECT_ROOTS=(
+    "$HOME/Work"
+    "$HOME/Personal"
+    "$HOME/Dev"
 )
-MANUAL_DIRS_STR=$(printf "%s\n" "${MANUAL_DIRS[@]}")
-COMBINED_DIRS=$(echo -e "$FIND_RESULT\n$MANUAL_DIRS_STR" | sort | uniq)
 
-COMBINED_RESULT=$(echo "$ZOXIDE_RESULT" | grep -Fx -f - <(echo "$COMBINED_DIRS"))
-COMBINED_RESULT+=$'\n'$(echo "$COMBINED_DIRS" | grep -Fvx -f <(echo "$ZOXIDE_RESULT"))
+MANUAL_DIRS=(
+    "$HOME/.dotfiles"
+)
 
-# Color the results
-CATPPUCCIN_LAVENDER="\033[38;5;147m"
-CATPPUCCIN_SAPPHIRE="\033[38;5;153m"
-CATPPUCCIN_PEACH="\033[38;5;214m"
-CATPPUCCIN_GRAY="\033[38;5;240m"
+CATPPUCCIN_MOCHA_COLORS=(
+    "#f5e0dc" # rosewater
+    "#f2cdcd" # flamingo
+    "#f5c2e7" # pink
+    "#cba6f7" # mauve
+    "#f38ba8" # red
+    "#eba0ac" # maroon
+    "#fab387" # peach
+    "#f9e2af" # yellow
+    "#a6e3a1" # green
+    "#94e2d5" # teal
+    "#89dceb" # sky
+    "#74c7ec" # sapphire
+    "#89b4fa" # blue
+    "#b4befe" # lavender
+    "#cdd6f4" # fg
+    "#bac2de" # subtext 0
+    "#a6adc8" # subtext 1
+    "#9399b2" # overlay 2
+    "#7f849c" # overlay 1
+)
 RESET_COLOR="\033[0m"
 
-COLORIZED_RESULT=$(echo "$COMBINED_RESULT" | while read -r line; do
-    if [[ "$line" == *~/Personal* ]]; then
-        printf "${CATPPUCCIN_LAVENDER}%s${RESET_COLOR}\n" "$line"
-    elif [[ "$line" == *~/Work* ]]; then
-        printf "${CATPPUCCIN_PEACH}%s${RESET_COLOR}\n" "$line"
+display_path() {
+    local path="$1"
+
+    if [[ "$path" == "$HOME" ]]; then
+        printf "~\n"
+    elif [[ "$path" == "$HOME/"* ]]; then
+        printf "~/%s\n" "${path#"$HOME/"}"
     else
-        printf "${CATPPUCCIN_GRAY}%s${RESET_COLOR}\n" "$line"
+        printf "%s\n" "$path"
     fi
-done)
+}
 
-# Pass it to fzf
-SELECTED_RESULT=$(echo -e "$COLORIZED_RESULT" | fzf --ansi)
+real_path() {
+    local path="$1"
 
-if [ -z "$SELECTED_RESULT" ]; then
+    if [[ "$path" == "~/"* ]]; then
+        printf "%s/%s\n" "$HOME" "${path#"~/"}"
+    else
+        printf "%s\n" "$path"
+    fi
+}
+
+session_name_for() {
+    local path="$1"
+
+    path="${path/#$HOME\//}"
+    path="${path/#.dotfiles/dotfiles}"
+    path="${path//\//-}"
+    path="${path//./_}"
+
+    printf "%s\n" "$path"
+}
+
+discover_dirs() {
+    local dir root
+
+    for root in "${PROJECT_ROOTS[@]}"; do
+        [[ -d "$root" ]] || continue
+
+        printf "%s\n" "$root"
+        find "$root" -mindepth 1 -maxdepth 1 -type d
+    done
+
+    for dir in "${MANUAL_DIRS[@]}"; do
+        [[ -d "$dir" ]] || continue
+        printf "%s\n" "$dir"
+    done
+}
+
+colorize() {
+    local colors="${CATPPUCCIN_MOCHA_COLORS[*]}"
+
+    awk -v colors="$colors" '
+        function hex_value(char) {
+            return index("0123456789abcdef", tolower(char)) - 1
+        }
+
+        function hex_pair(pair) {
+            return hex_value(substr(pair, 1, 1)) * 16 + hex_value(substr(pair, 2, 1))
+        }
+
+        function ansi_color(hex, value) {
+            sub(/^#/, "", hex)
+            value = hex_pair(substr(hex, 1, 2)) ";" hex_pair(substr(hex, 3, 2)) ";" hex_pair(substr(hex, 5, 2))
+            return esc "[38;2;" value "m"
+        }
+
+        function hash_key(key, hash, i) {
+            hash = 5381
+
+            for (i = 1; i <= length(key); i++) {
+                hash = (hash * 33 + ord[substr(key, i, 1)]) % 2147483647
+            }
+
+            return hash
+        }
+
+        BEGIN {
+            esc = sprintf("%c", 27)
+            color_count = split(colors, palette, " ")
+
+            for (i = 1; i < 256; i++) {
+                ord[sprintf("%c", i)] = i
+            }
+        }
+
+        NF {
+            start_index = (hash_key($0) % color_count) + 1
+            color_index = start_index
+
+            for (attempt = 0; attempt < color_count && used[color_index]; attempt++) {
+                color_index = (color_index % color_count) + 1
+            }
+
+            if (used[color_index]) {
+                color_index = start_index
+            }
+
+            used[color_index] = 1
+            printf "%s%s%s[0m\n", ansi_color(palette[color_index]), $0, esc
+        }
+    '
+}
+
+strip_ansi() {
+    sed $'s/\x1b\\[[0-9;]*m//g'
+}
+
+DIRS="$(
+    discover_dirs |
+        sort -u |
+        while IFS= read -r dir; do
+            display_path "$dir"
+        done
+)"
+
+ZOXIDE_DIRS="$(
+    zoxide query -l 2>/dev/null |
+        while IFS= read -r dir; do
+            display_path "$dir"
+        done
+)"
+
+CHOICES="$(
+    {
+        grep -Fx -f <(printf "%s\n" "$DIRS") <<< "$ZOXIDE_DIRS" || true
+        grep -Fvx -f <(printf "%s\n" "$ZOXIDE_DIRS") <<< "$DIRS" || true
+    } | awk 'NF && !seen[$0]++'
+)"
+
+SELECTED_RESULT="$(
+    printf "%s\n" "$CHOICES" |
+        colorize |
+        fzf --ansi --no-multi || true
+)"
+
+if [[ -z "$SELECTED_RESULT" ]]; then
     exit 0
 fi
 
-SELECTED_RESULT_CLEAN=$(echo "$SELECTED_RESULT" | sed "s|\x1B\[[0-9;]*m||g")
-zoxide add "${SELECTED_RESULT_CLEAN/\~/$HOME}"
+SELECTED_RESULT_CLEAN="$(printf "%s\n" "$SELECTED_RESULT" | strip_ansi)"
+SELECTED_PATH="$(real_path "$SELECTED_RESULT_CLEAN")"
+SESSION="$(session_name_for "$SELECTED_PATH")"
 
-FOLDER=$(basename "$SELECTED_RESULT_CLEAN" | tr . _)
+zoxide add "$SELECTED_PATH"
 
-SESSION=$(tmux list-sessions -F "#{session_name}" | grep -x "$FOLDER")
-
-SELECTED_RESULT_CLEAN=$(echo "$SELECTED_RESULT_CLEAN" | sed "s|~|$HOME|")
-
-if [ -z "$SESSION" ]; then
-    tmux new-session -d -s $FOLDER -c "$SELECTED_RESULT_CLEAN/" -n nvim 'nvim; exec $SHELL'
-    tmux new-window -c "$SELECTED_RESULT_CLEAN" -d -n shell
-    tmux switch-client -t $FOLDER
-else
-    tmux switch-client -t $FOLDER
+if ! tmux has-session -t "=$SESSION" 2>/dev/null; then
+    tmux new-session -d -s "$SESSION" -c "$SELECTED_PATH" -n nvim 'nvim; exec "$SHELL"'
+    tmux new-window -d -t "=$SESSION" -c "$SELECTED_PATH" -n shell
 fi
 
-
+tmux switch-client -t "=$SESSION"
