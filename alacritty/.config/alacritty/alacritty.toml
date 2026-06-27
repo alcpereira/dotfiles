@@ -31,12 +31,7 @@ bindings = [
     "-E",
     "-h 95%",
     "-w 95%",
-    "source ~/.config/zsh/work.zsh && lazygit",
-  ] } },
-  { key = "Y", mods = "Command", command = { program = "/opt/homebrew/bin/tmux", args = [
-    "display-popup",
-    "-E",
-    "source ~/.config/zsh/work.zsh && node $HOME/Work/yacht/dist/index.js",
+    "lazygit",
   ] } },
   { key = "G", mods = "Command", command = { program = "/opt/homebrew/bin/tmux", args = [
     "display-popup",
