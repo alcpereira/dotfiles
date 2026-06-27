@@ -1,4 +1,5 @@
 apktool
+atuin
 bat
 bitwarden
 bitwarden-cli
@@ -11,23 +12,23 @@ flyctl
 fnm
 fzf
 gh
+git-delta
 go
 hyperfine
 jq
 lazygit
 luarocks
+mise
 mkcert
 moreutils
 neovim
 postman
 prettierd
 python
-rar
 redis
 ripgrep
 starship
 stow
-tldr
 tmux
 tree
 vlc
@@ -37,4 +38,3 @@ yamllint
 zoxide
 zsh-autosuggestions
 zsh-syntax-highlighting
-zulu@17
