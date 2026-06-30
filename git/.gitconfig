@@ -4,6 +4,9 @@ path = ~/Work/.gitconfig
 [includeIf "gitdir:~/Dev/"]
 path = ~/Dev/.gitconfig
 
+[includeIf "gitdir:~/Personal/"]
+path = ~/Personal/.gitconfig
+
 [includeIf "gitdir:~/.dotfiles/"]
 path = ~/Dev/.gitconfig
 
