@@ -1,0 +1,25 @@
+# Appearance
+theme = Catppuccin Mocha
+font-family = MesloLGS Nerd Font Mono
+font-size = 14
+font-thicken = true
+font-thicken-strength = 0
+
+# Selection
+copy-on-select = clipboard
+
+# Window
+maximize = true
+macos-titlebar-style = hidden
+macos-window-buttons = hidden
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+
+# tmux integration. These private sequences are handled by the matching
+# User100-User104 bindings in ~/.tmux.conf.
+keybind = super+l=text:\x1b[30000~
+keybind = super+g=text:\x1b[30001~
+keybind = super+shift+g=text:\x1b[30002~
+keybind = super+w=text:\x1b[30003~
+keybind = super+shift+w=text:\x1b[30004~
