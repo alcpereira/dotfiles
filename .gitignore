@@ -1,2 +1,6 @@
 # Personal/work-specific zsh configs
 **/work.zsh
+
+# Local runtime state — do not track
+scripts/.local/share/
+scripts/.local/state/
